@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ashu Gallery</title>
+  <link rel="icon" href="logo2.png" type="image/png" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    .navbar {
+      background-color: #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 30px;
+    }
+
+    .home-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+    }
+
+    .home-container img {
+      width: 40px;
+      height: auto;
+    }
+
+    .navbar a {
+      color: white;
+      padding: 10px 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .navbar a:hover {
+      background-color: #575757;
+      border-radius: 5px;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 30px 0 10px 0;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 20px 40px;
+    }
+
+    .gallery-item {
+      background-color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.03);
+    }
+
+    .caption {
+      padding: 10px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      border: 5px solid white;
+      border-radius: 10px;
+    }
+
+    .close, .nav {
+      position: absolute;
+      color: white;
+      font-size: 40px;
+      cursor: pointer;
+    }
+
+    .close {
+      top: 20px;
+      right: 30px;
+    }
+
+    .nav {
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 10px;
+    }
+
+    .prev {
+      left: 20px;
+    }
+
+    .next {
+      right: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ Navbar with Logo -->
+  <div class="navbar">
+    <div class="home-container">
+      <img src="photos logo.png" alt="Logo" />
+      <span><strong>Ashu Gallery</strong></span>
+    </div>
+    <div>
+        <a href="http://127.0.0.1:5500/ashu/index.html">Home</a>
+        <a href="http://127.0.0.1:5500/ashu/about.html">About</a>
+        <a href="http://127.0.0.1:5500/ashu/gallary.html">Gallery</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+
+  <h1>My Gallery</h1>
+
+  <!-- ✅ Image Grid -->
+  <div class="gallery" id="gallery"></div>
+
+  <!-- ✅ Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <span class="close" onclick="closeLightbox()">&times;</span>
+    <span class="nav prev" onclick="changeImage(-1)">&#10094;</span>
+    <img id="lightbox-img" src="" alt="Full Image">
+    <span class="nav next" onclick="changeImage(1)">&#10095;</span>
+  </div>
+
+  <!-- ✅ JavaScript -->
+  <script>
+    const images = [
+      { src: 'tajmahal wali.jpeg', caption: 'Tajmahal' },
+      { src: 'dimpal bhai.jpeg', caption: 'Hardoi Fields' },
+      { src: 'codeing html.jpeg', caption: 'Coding Time' },
+      { src: 'sunsine.jpeg', caption: 'Sunset at Home' },
+      { src: 'family.jpeg', caption: 'Photography Moment' },
+      { src: 'home.jpeg', caption: 'Village Life' },
+      { src: 'shiva.jpg', caption: 'My Best Friend' },
+      { src: 'programing.jpeg', caption: 'Coding Night' },
+      { src: 'web project.png', caption: 'Web Project' },
+      { src: 'dimpal bhai.jpeg', caption: 'Random Click' },
+      { src: 'sunsine.jpeg', caption: 'Nature Love' },
+      { src: 'programing.jpeg', caption: 'Tea Break' }
+    ];
+
+    const gallery = document.getElementById("gallery");
+    images.forEach((img, index) => {
+      const div = document.createElement("div");
+      div.className = "gallery-item";
+      div.innerHTML = `
+        <img src="${img.src}" onclick="openLightbox(${index})">
+        <div class="caption">${img.caption}</div>
+      `;
+      gallery.appendChild(div);
+    });
+
+    let currentIndex = 0;
+
+    function openLightbox(index) {
+      currentIndex = index;
+      document.getElementById("lightbox").style.display = "flex";
+      document.getElementById("lightbox-img").src = images[index].src;
+    }
+
+    function closeLightbox() {
+      document.getElementById("lightbox").style.display = "none";
+    }
+
+    function changeImage(step) {
+      currentIndex = (currentIndex + step + images.length) % images.length;
+      document.getElementById("lightbox-img").src = images[currentIndex].src;
+    }
+  </script>
+
+</body>
+</html>
